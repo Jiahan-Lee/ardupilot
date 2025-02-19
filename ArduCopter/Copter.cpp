@@ -80,9 +80,15 @@
 #include "version.h"
 #undef FORCE_VERSION_H_INCLUDE
 
-const AP_HAL::HAL& hal = AP_HAL::get_HAL();
+const AP_HAL::HAL& hal = AP_HAL::get_HAL();         //初始化并引用硬件抽象层（HAL）实例
 
+/*func：指向任务函数的指针，表示需要调度的任务函数。
+_interval_ticks：任务的运行间隔，单位为系统的调度周期“tick”单位：HZ。
+_max_time_micros：任务的最大允许执行时间，单位是微秒，用于限制任务运行时间，确保不会占用过多的 CPU。
+_prio：任务优先级，用于决定任务在调度队列中的执行顺序。优先级高的任务会被优先调度。*/
 #define SCHED_TASK(func, _interval_ticks, _max_time_micros, _prio) SCHED_TASK_CLASS(Copter, &copter, func, _interval_ticks, _max_time_micros, _prio)
+
+//将某些需要快速响应的任务注册到任务调度器中
 #define FAST_TASK(func) FAST_TASK_CLASS(Copter, &copter, func)
 
 /*
